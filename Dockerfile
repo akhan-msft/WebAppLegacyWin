@@ -15,7 +15,7 @@ COPY logmonitor/ /LogMonitor
 WORKDIR batch
  COPY batch/ /batch
 
-COPY logs/ /app/logs
+#COPY logs/ /app/logs
 
 RUN New-Item -Path 'C:\web\logs' -ItemType Directory
 
@@ -28,7 +28,9 @@ RUN powershell -file "C:\batch\createschedule.ps1"
 WORKDIR /inetpub/wwwroot
 
 # Copy the published ASP.NET web application to the container
-COPY bin/app.publish/ .
+#COPY bin/app.publish/ .
+
+COPY . .
 
 RUN c:\windows\system32\inetsrv\appcmd.exe set config -section:system.applicationHost/sites /"[name='Default Web Site'].logFile.logTargetW3C:"File,ETW"" /commit:apphost
 

@@ -17,16 +17,29 @@ steps:
   inputs:
     restoreSolution: '**/*.sln'
 
+#- task: VSBuild@1
+#  inputs:
+#    solution: '**/*.sln'
+#    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(Build.ArtifactStagingDirectory)\AppPackage.zip"'
+#    platform: 'Any CPU'
+#    configuration: '$(buildConfiguration)'
+
+#- task: PublishBuildArtifacts@1
+#  inputs:
+#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#    ArtifactName: 'drop'
+#    publishLocation: 'Container'
+
 - task: VSBuild@1
   inputs:
     solution: '**/*.sln'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(Build.ArtifactStagingDirectory)\AppPackage.zip"'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:OutDir=$(Build.ArtifactStagingDirectory)/app.publish/'
     platform: 'Any CPU'
     configuration: '$(buildConfiguration)'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/app.publish'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
