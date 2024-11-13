@@ -5,10 +5,10 @@ trigger:
 
 pool:
   vmImage: 'windows-latest'
-  imageName: 'akhan2017/webapplegacywin'
 
 variables:
   buildConfiguration: 'Release'
+  imageName: 'akhan2017/webapplegacywin'
 
 steps:
 - task: NuGetToolInstaller@1
