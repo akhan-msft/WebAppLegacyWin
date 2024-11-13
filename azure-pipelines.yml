@@ -9,6 +9,7 @@ pool:
 variables:
   buildConfiguration: 'Release'
   imageName: 'akhan2017/webapplegacywin'
+  baseImage: 'mcr.microsoft.com/dotnet/framework/aspnet:4.8.1'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -37,6 +38,17 @@ steps:
     platform: 'Any CPU'
     configuration: '$(buildConfiguration)'
 
+- task: Cache@2
+  inputs:
+    key: 'docker|base-image|$(baseImage)'
+    restoreKeys: 'docker|base-image'
+    path: 'C:/ProgramData/docker'
+
+# Step 3: Pre-pull the base image (if not already cached)
+- script: |
+    docker pull $(baseImage) || echo "Base image not found in cache, downloading..."
+  displayName: 'Pre-pull Base Image'
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/app.publish'
@@ -51,11 +63,6 @@ steps:
     Dockerfile: '**/Dockerfile'
     tags: |
       $(Build.BuildId)
-- task: Cache@2
-  inputs:
-    key: 'docker | "$(Agent.OS)" | Dockerfile'
-    path: $(Pipeline.Workspace)/docker
-    restoreKeys: |
-      docker | "$(Agent.OS)"
+
 
 
