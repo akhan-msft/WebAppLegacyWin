@@ -38,6 +38,12 @@ steps:
     platform: 'Any CPU'
     configuration: '$(buildConfiguration)'
 
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/app.publish'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
 - task: Cache@2
   inputs:
     key: 'docker|base-image|$(baseImage)'
@@ -48,12 +54,6 @@ steps:
 - script: |
     docker pull $(baseImage) || echo "Base image not found in cache, downloading..."
   displayName: 'Pre-pull Base Image'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/app.publish'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
 
 - task: Docker@2
   inputs:
