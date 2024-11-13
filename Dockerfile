@@ -17,7 +17,7 @@ WORKDIR batch
 
 #COPY logs/ /app/logs
 
-RUN New-Item -Path 'C:\web\logs' -ItemType Directory
+#RUN New-Item -Path 'C:\web\logs' -ItemType Directory
 
 #run powershell commaand to execute batch exceute
 
