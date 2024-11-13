@@ -5,6 +5,7 @@ trigger:
 
 pool:
   vmImage: 'windows-latest'
+  imageName: 'akhan2017/webapplegacywin'
 
 variables:
   buildConfiguration: 'Release'
