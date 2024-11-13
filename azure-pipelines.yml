@@ -45,7 +45,7 @@ steps:
 
 - task: Docker@2
   inputs:
-    containerRegistry: 'dockerRegistryServiceConnection' 
+    containerRegistry: 'acrRegistryConnection' 
     repository: '$(imageName)'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
