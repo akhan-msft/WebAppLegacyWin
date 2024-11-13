@@ -9,8 +9,8 @@ pool:
 variables:
   buildConfiguration: 'Release'
   imageName: 'akhan2017/webapplegacywin'
-  baseImage: 'mcr.microsoft.com/dotnet/framework/aspnet:4.8.1'
-  normalizedBaseImageKey: "$(baseImage)".replace('/', '-').replace(':', '-')
+  baseImage: "mcr.microsoft.com/dotnet/framework/aspnet:4.8.1"
+  # normalizedBaseImageKey: "$(baseImage)".replace('/', '-').replace(':', '-')
 
 steps:
 - task: NuGetToolInstaller@1
@@ -47,7 +47,7 @@ steps:
 
 - task: Cache@2
   inputs:
-    key: 'docker|base-image|$(normalizedBaseImageKey)'
+    key: 'docker|base-image|$(baseImage)'
     restoreKeys: 'docker|base-image'
     path: 'C:/ProgramData/docker'
 
