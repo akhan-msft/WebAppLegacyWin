@@ -41,13 +41,10 @@ steps:
     tags: |
       $(Build.BuildId)
 
-- task: Kubernetes@1
+- task: KubernetesManifest@1
   inputs:
-    connectionType: 'Kubernetes Service Connection'
-    kubernetesServiceEndpoint: 'winPoolK8sConnection'
+    action: 'deploy'
+    connectionType: 'kubernetesServiceConnection'
+    kubernetesServiceConnection: 'winPoolK8sConnection'
     namespace: 'apis'
-    command: 'apply'
-    useConfigurationFile: true
-    configuration: 'kubernetes/deployment.yaml'
-    secretType: 'dockerRegistry'
-    containerRegistryType: 'Azure Container Registry'
+    manifests: '$(Pipeline.Workspace)/k8s/deployment.yaml'
