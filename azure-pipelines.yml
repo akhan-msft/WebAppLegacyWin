@@ -21,8 +21,8 @@ steps:
 
 - task: FileTransform@2
   inputs:
-    folderPath: '$(System.DefaultWorkingDirectory)/Web.config'
-    xmlTargetFiles: '**/web.config'
+    folderPath: '$(System.DefaultWorkingDirectory)/'
+    xmlTargetFiles: 'Web.config'
     
 
 - task: VSBuild@1
