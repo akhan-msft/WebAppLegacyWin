@@ -10,6 +10,7 @@ variables:
   buildConfiguration: 'Release'
   imageName: 'akhan2017/webapplegacywin'
   baseImage: "mcr.microsoft.com/dotnet/framework/aspnet:4.8.1"
+  kubernetesManifest: '$(Build.ArtifactStagingDirectory)/k8s/deployment.yaml'
   
 steps:
 - task: NuGetToolInstaller@1
@@ -31,7 +32,20 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/k8s'
+    Contents: 'deployment.yaml'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/k8s'   
+    
+- task: KubernetesManifest@1
+  inputs:
+    action: 'deploy'
+    connectionType: 'kubernetesServiceConnection'
+    kubernetesServiceConnection: 'winPoolK8sConnection'
+    namespace: 'apis'
+    manifests: '$(kubernetesManifest)'
+    
 - task: Docker@2
   inputs:
     containerRegistry: 'acrRegistryConnection' 
@@ -41,10 +55,3 @@ steps:
     tags: |
       $(Build.BuildId)
 
-- task: KubernetesManifest@1
-  inputs:
-    action: 'deploy'
-    connectionType: 'kubernetesServiceConnection'
-    kubernetesServiceConnection: 'winPoolK8sConnection'
-    namespace: 'apis'
-    manifests: '$(Pipeline.Workspace)/k8s/deployment.yaml'
