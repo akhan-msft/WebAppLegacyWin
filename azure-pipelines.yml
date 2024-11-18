@@ -11,26 +11,12 @@ variables:
   imageName: 'akhan2017/webapplegacywin'
   baseImage: "mcr.microsoft.com/dotnet/framework/aspnet:4.8.1"
   
-
 steps:
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '**/*.sln'
-
-#- task: VSBuild@1
-#  inputs:
-#    solution: '**/*.sln'
-#    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(Build.ArtifactStagingDirectory)\AppPackage.zip"'
-#    platform: 'Any CPU'
-#    configuration: '$(buildConfiguration)'
-
-#- task: PublishBuildArtifacts@1
-#  inputs:
-#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-#    ArtifactName: 'drop'
-#    publishLocation: 'Container'
 
 - task: VSBuild@1
   inputs:
@@ -45,16 +31,6 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-- task: Cache@2
-  inputs:
-    key: 'docker|base-image|$(normalizedBaseImageKey)'
-    restoreKeys: 'docker|base-image'
-    path: 'C:/ProgramData/docker'
-
-# Step 3: Pre-pull the base image (if not already cached)
-- script: |
-    docker pull $(baseImage) || echo "Base image not found in cache, downloading..."
-  displayName: 'Pre-pull Base Image'
 
 - task: Docker@2
   inputs:
@@ -65,5 +41,11 @@ steps:
     tags: |
       $(Build.BuildId)
 
-
+- task: KubernetesManifest@1
+  inputs:
+    action: 'deploy'
+    connectionType: 'kubernetesServiceConnection'
+    kubernetesServiceConnection: 'winPoolK8sConnection'
+    namespace: 'apis'
+    manifests: 'kubernetes/deployment.yaml'
 
