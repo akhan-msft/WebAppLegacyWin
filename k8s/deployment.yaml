@@ -1,0 +1,21 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-legacy-win
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webapp-legacy-win
+  template:
+    metadata:
+      labels:
+        app: webapp-legacy-win
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": windows
+      containers:
+      - name: webapp-legacy-win
+        image: akhan2017/webapplegacywin:latest
+        ports:
+        - containerPort: 80
