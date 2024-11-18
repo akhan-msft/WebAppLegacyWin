@@ -19,6 +19,12 @@ steps:
   inputs:
     restoreSolution: '**/*.sln'
 
+- task: FileTransform@2
+  inputs:
+    folderPath: '$(System.DefaultWorkingDirectory)/Web.config'
+    xmlTargetFiles: '**/web.config'
+    
+
 - task: VSBuild@1
   inputs:
     solution: '**/*.sln'
@@ -46,6 +52,7 @@ steps:
     namespace: 'apis'
     manifests: '$(kubernetesManifest)'
     
+
 - task: Docker@2
   inputs:
     containerRegistry: 'acrRegistryConnection' 
