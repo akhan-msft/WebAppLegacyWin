@@ -1,10 +1,10 @@
 ﻿apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: __DEPLOYMENT_NAME__
+  name: webapplegacywin
   namespace: apis
 spec:
-  replicas: __REPLICAS__
+  replicas: 1
   selector:
     matchLabels:
       app: webapp-legacy-win
@@ -17,6 +17,6 @@ spec:
         "kubernetes.io/os": windows
       containers:
       - name: webapplegacywin
-        image: akhanacr.azurecr.io/webapplegacywin:__IMAGE_TAG__
+        image: akhanacr.azurecr.io/webapplegacywin:latest
         ports:
         - containerPort: 80
