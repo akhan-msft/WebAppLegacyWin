@@ -62,12 +62,3 @@ steps:
     manifests: '$(kubernetesManifest)'
     
 
-- task: Docker@2
-  inputs:
-    containerRegistry: 'acrRegistryConnection' 
-    repository: '$(imageName)'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-    tags: |
-      $(Build.BuildId)
-
