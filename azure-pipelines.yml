@@ -8,7 +8,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  imageName: 'akhan2017/webapplegacywin'
+  imageName: 'akhanacr.azurecr.io/webapplegacywin'
   baseImage: "mcr.microsoft.com/dotnet/framework/aspnet:4.8.1"
   kubernetesManifest: '$(Build.ArtifactStagingDirectory)/k8s/deployment.yaml'
   
@@ -37,6 +37,15 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/app.publish'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+   
+- task: Docker@2
+  inputs:
+    containerRegistry: 'acrRegistryConnection' 
+    repository: '$(imageName)'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: |
+      $(Build.BuildId)
 
 - task: CopyFiles@2
   inputs:
