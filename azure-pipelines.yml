@@ -11,6 +11,10 @@ variables:
   imageName: 'webapplegacywin'
   baseImage: "mcr.microsoft.com/dotnet/framework/aspnet:4.8.1"
   kubernetesManifest: '$(Build.ArtifactStagingDirectory)/k8s/deployment.yaml'
+  REPLICAS: 1
+  IMAGE_TAG: $(Build.BuildId)
+  DEPLOYMENT_NAME: 'webapplegacywin'
+
   
 steps:
 - task: NuGetToolInstaller@1
@@ -37,7 +41,19 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/app.publish'
     ArtifactName: 'drop'
     publishLocation: 'Container'
-   
+  
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/k8s'
+    Contents: 'deployment.yaml'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/k8s'  
+
+ - task: FileTransform@2
+   displayName: "Transform Kubernetes Manifest"
+   inputs:
+     folderPath: "$(Build.ArtifactStagingDirectory)/k8s"
+     targetFiles: "deployment.yaml"
+
 - task: Docker@2
   inputs:
     containerRegistry: 'acrRegistryConnection' 
@@ -45,14 +61,9 @@ steps:
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
     tags: |
-      $(Build.BuildId)
+      $(Build.BuildId)    
 
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/k8s'
-    Contents: 'deployment.yaml'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/k8s'   
-    
+
 - task: KubernetesManifest@1
   inputs:
     action: 'deploy'
