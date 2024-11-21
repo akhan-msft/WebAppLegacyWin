@@ -48,6 +48,12 @@ steps:
     RegEx: ':latest'
     ValueToReplace: ':$(IMAGE_TAG)'
 
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.SourcesDirectory)/k8s/deployment.yaml'
+    ArtifactName: 'manifests'
+    publishLocation: 'Container'
+
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/k8s'
