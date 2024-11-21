@@ -28,7 +28,6 @@ steps:
     folderPath: '$(System.DefaultWorkingDirectory)/'
     xmlTargetFiles: 'Web.config'
     
-
 - task: VSBuild@1
   inputs:
     solution: '**/*.sln'
@@ -42,17 +41,18 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
   
+
+- task: RegExMatchReplace@2
+  inputs:
+    PathToFile: '$(Build.SourcesDirectory)/k8/deployment.yaml'
+    RegEx: ':latest'
+    ValueToReplace: ':$(IMAGE_TAG)'
+
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/k8s'
     Contents: 'deployment.yaml'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/k8s'  
-
-- task: FileTransform@2
-  displayName: "Transform Kubernetes Manifest"
-  inputs:
-    folderPath: "$(Build.ArtifactStagingDirectory)/k8s"
-    jsonTargetFiles: "deployment.yaml"
 
 - task: Docker@2
   inputs:
