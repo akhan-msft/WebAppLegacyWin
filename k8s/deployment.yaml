@@ -15,7 +15,7 @@ spec:
       nodeSelector:
         "kubernetes.io/os": windows
       containers:
-      - name: webapp-legacy-win
-        image: akhan2017/webapplegacywin:latest
+      - name: webapplegacywin
+        image: akhanacr.azurecr.io/webapplegacywin:latest
         ports:
         - containerPort: 80
