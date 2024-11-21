@@ -48,11 +48,11 @@ steps:
     Contents: 'deployment.yaml'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/k8s'  
 
- - task: FileTransform@2
-   displayName: "Transform Kubernetes Manifest"
-   inputs:
-     folderPath: "$(Build.ArtifactStagingDirectory)/k8s"
-     targetFiles: "deployment.yaml"
+- task: FileTransform@2
+  displayName: "Transform Kubernetes Manifest"
+  inputs:
+    folderPath: "$(Build.ArtifactStagingDirectory)/k8s"
+    jsonTargetFiles: "deployment.yaml"
 
 - task: Docker@2
   inputs:
