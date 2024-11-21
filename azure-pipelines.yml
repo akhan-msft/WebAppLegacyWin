@@ -8,7 +8,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  imageName: 'akhanacr.azurecr.io/webapplegacywin'
+  imageName: 'webapplegacywin'
   baseImage: "mcr.microsoft.com/dotnet/framework/aspnet:4.8.1"
   kubernetesManifest: '$(Build.ArtifactStagingDirectory)/k8s/deployment.yaml'
   
