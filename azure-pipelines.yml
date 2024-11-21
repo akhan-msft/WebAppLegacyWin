@@ -44,7 +44,7 @@ steps:
 
 - task: RegExMatchReplace@2
   inputs:
-    PathToFile: '$(Build.SourcesDirectory)/k8/deployment.yaml'
+    PathToFile: '$(Build.SourcesDirectory)/k8s/deployment.yaml'
     RegEx: ':latest'
     ValueToReplace: ':$(IMAGE_TAG)'
 
