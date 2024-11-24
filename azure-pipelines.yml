@@ -41,6 +41,12 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
   
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/LogMonitor'  
+    Contents: '**/*'                                     
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/app.publish/LogMonitor' 
+
 
 - task: RegExMatchReplace@2
   inputs:
