@@ -37,7 +37,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/app.publish'
     ArtifactName: 'drop'
     publishLocation: 'Container'
   
@@ -65,7 +65,8 @@ steps:
     containerRegistry: 'acrRegistryConnection' 
     repository: '$(imageName)'
     command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
+    Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+    buildContext: '$(Build.ArtifactStagingDirectory)/app.publish'
     tags: |
       $(Build.BuildId)    
 
