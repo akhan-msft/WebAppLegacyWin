@@ -47,6 +47,12 @@ steps:
     Contents: '**/*'                                     
     TargetFolder: '$(Build.ArtifactStagingDirectory)/app.publish/LogMonitor' 
 
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/batch'  
+    Contents: '**/*'                                    
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/app.publish/batch'  
+
 
 - task: RegExMatchReplace@2
   inputs:
