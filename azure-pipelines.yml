@@ -31,7 +31,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '**/*.sln'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:OutDir=$(Build.ArtifactStagingDirectory)/app.publish/'
+    msbuildArgs: '/p:Platform=$(buildPlatform) /p:Configuration=$(buildConfiguration)'
     platform: 'Any CPU'
     configuration: '$(buildConfiguration)'
 
