@@ -74,7 +74,7 @@ steps:
 
 - task: Docker@2
   inputs:
-    containerRegistry: 'acrRegistryConnection' 
+    containerRegistry: 'akhanacrRegistryConnection' 
     repository: '$(imageName)'
     command: 'buildAndPush'
     Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
