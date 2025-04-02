@@ -71,6 +71,21 @@ steps:
     SourceFolder: '$(Build.SourcesDirectory)/k8s'
     Contents: 'deployment.yaml'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/k8s'  
+    
+- task: AzureKeyVault@2
+  inputs:
+    azureSubscription: 'sc-keyvault'
+    KeyVaultName: 'aksdevvault'
+    SecretsFilter: '*'
+    RunAsPreJob: true
+    
+- script: |
+    echo $(DefaultConnection)
+  displayName: 'Print connectionString'
+  
+- script: |
+    echo $(encryptionkey)
+  displayName: 'Print encryptionKey'
 
 - task: Docker@2
   inputs:
