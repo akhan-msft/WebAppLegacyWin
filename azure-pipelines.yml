@@ -83,21 +83,24 @@ steps:
     echo $(DefaultConnection)
   displayName: 'Print connectionString'
   
+- task: CmdLine@2
+  displayName: Create file
+  inputs:
+    script: 'echo $(DefaultConnection) > secret.txt'
 
-- script: |
-    secret=$(DefaultConnection)
-    firstThreeChars=${secret:0:3}
-    secretLength=${#secret}
-    echo "First 3 characters of the secret: $firstThreeChars"
-    echo "Total length of the secret: $secretLength"
-  displayName: 'Print first 3 characters and length of connectionString'
+- task: CopyFiles@2
+  displayName: Copy file
+  inputs:
+    Contents: secret.txt
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
 
-- script: |
-    keyv=${encryptionkey}
-    firstThreeChars=${encryptionkey:0:3}
-    echo "First 3 characters of the secret: $firstThreeChars"
-  displayName: 'Print encryptionKey'
-  
+- task: PublishBuildArtifacts@1
+  displayName: Publish Artifact
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
 - task: Docker@2
   inputs:
     containerRegistry: 'akhanacrRegistryConnection' 
