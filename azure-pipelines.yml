@@ -100,6 +100,24 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+    
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'sc-keyvault'  # Service Connection to authenticate
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      # Define Key Vault and Key Name
+      KEYVAULT_NAME="aksdevvault"
+      KEY_NAME="encryptionkey"
+
+      # Retrieve the Key from Key Vault
+      az login --identity 
+      KEY_JSON=$(az keyvault key show --vault-name $KEYVAULT_NAME --name $KEY_NAME --query key --output json)
+
+      echo "Retrieved Key: $KEY_JSON"  
+
 
 - task: Docker@2
   inputs:
