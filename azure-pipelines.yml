@@ -101,6 +101,14 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
     
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'sc-keyvault'
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az account show  # This should work if authentication is correct
+
 
 - task: AzureCLI@2
   displayName: Azure CLI to read keys
