@@ -123,8 +123,8 @@ steps:
 
       # Retrieve the Key from Key Vault
       az login --identity 
-      KEY_JSON=$(az keyvault key show --vault-name $KEYVAULT_NAME --name $KEY_NAME --query key --output json)
-
+      #KEY_JSON=$(az keyvault key show --vault-name $KEYVAULT_NAME --name $KEY_NAME --query key --output json)
+      az keyvault key list --vault-name $KEYVAULT_NAME 
       echo "Retrieved Key: $KEY_JSON"  
 
 
