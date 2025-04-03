@@ -127,6 +127,42 @@ steps:
       az keyvault key list --vault-name $KEYVAULT_NAME 
       echo "Retrieved Key: $KEY_JSON"  
 
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'sc-keyvault'  # Managed Identity service connection
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      # Define variables
+      $keyVaultName = "aksdevvault"
+      $keyName = "encryptionKey"
+      $plaintext = "MySecretDataHelloWorld"
+
+      # Authenticate with Azure Managed Identity
+      az login --identity
+
+      # 🔹 Encrypt data using the Key Vault key
+      $encryptedData = az keyvault key encrypt `
+        --vault-name $keyVaultName `
+        --name $keyName `
+        --algorithm RSA-OAEP `
+        --value $plaintext `
+        --query result `
+        --output tsv
+
+      Write-Host "Encrypted Data: $encryptedData"
+
+      # 🔹 Decrypt the encrypted data
+      $decryptedData = az keyvault key decrypt `
+        --vault-name $keyVaultName `
+        --name $keyName `
+        --algorithm RSA-OAEP `
+        --value $encryptedData `
+        --query result `
+        --output tsv
+
+      Write-Host "Decrypted Data: $decryptedData"
+
 
 - task: Docker@2
   inputs:
