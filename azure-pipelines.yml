@@ -133,7 +133,7 @@ steps:
         param (
             [string]$variableName
         )
-        return $variableName -match 'connectionString|anotherSecret|yetAnotherSecret' # Add your secret names here
+        return $variableName -match 'ApiKey|DefaultConnection|MySecret' # Add your secret names here
     }
 
     # Traverse environment variables
