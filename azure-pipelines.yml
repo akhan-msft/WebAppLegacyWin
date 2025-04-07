@@ -88,6 +88,7 @@ steps:
   inputs:
     script: 'echo $(DefaultConnection) > secret.txt'
 
+
 - task: CopyFiles@2
   displayName: Copy file
   inputs:
@@ -128,24 +129,14 @@ steps:
       echo "Retrieved Key: $KEY_JSON" 
 
 - powershell: |
-    # Function to check if a variable is a secret
-    function Is-SecretVariable {
-        param (
-            [string]$variableName
-        )
-        return $variableName -match 'ApiKey|DefaultConnection|MySecret' # Add your secret names here
-    }
+    # Retrieve the secret from the environment variable
+    $secret1 = "$(DefaultConnection)"
+    
+    # Print the first 3 characters of the secret
+    $firstThreeChars = $secret1.Substring(0, 3)
+    Write-Host "First 3 characters of the secret: $firstThreeChars"
+  displayName: 'Print first 3 characters of DefaultConnection'
 
-    # Traverse environment variables
-    foreach ($envVar in [System.Environment]::GetEnvironmentVariables().Keys) {
-        if (Is-SecretVariable -variableName $envVar) {
-            $secretValue = [System.Environment]::GetEnvironmentVariable($envVar)
-            Write-Host "Secret Variable: $envVar"
-            Write-Host "First 3 characters: $($secretValue.Substring(0, 3))"
-            Write-Host "Total length: $($secretValue.Length)"
-        }
-    }
-  displayName: 'Traverse and Print Secret Variables'
 
 - task: AzureCLI@2
   inputs:
