@@ -125,7 +125,27 @@ steps:
       az login --identity 
       #KEY_JSON=$(az keyvault key show --vault-name $KEYVAULT_NAME --name $KEY_NAME --query key --output json)
       az keyvault key list --vault-name $KEYVAULT_NAME 
-      echo "Retrieved Key: $KEY_JSON"  
+      echo "Retrieved Key: $KEY_JSON" 
+
+- powershell: |
+    # Function to check if a variable is a secret
+    function Is-SecretVariable {
+        param (
+            [string]$variableName
+        )
+        return $variableName -match 'connectionString|anotherSecret|yetAnotherSecret' # Add your secret names here
+    }
+
+    # Traverse environment variables
+    foreach ($envVar in [System.Environment]::GetEnvironmentVariables().Keys) {
+        if (Is-SecretVariable -variableName $envVar) {
+            $secretValue = [System.Environment]::GetEnvironmentVariable($envVar)
+            Write-Host "Secret Variable: $envVar"
+            Write-Host "First 3 characters: $($secretValue.Substring(0, 3))"
+            Write-Host "Total length: $($secretValue.Length)"
+        }
+    }
+  displayName: 'Traverse and Print Secret Variables'
 
 - task: AzureCLI@2
   inputs:
