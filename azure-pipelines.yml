@@ -135,6 +135,7 @@ steps:
     # Print the first 3 characters of the secret
     $firstThreeChars = $secret1.Substring(0, 3)
     Write-Host "First 3 characters of the secret: $firstThreeChars"
+    Write-Host "Full Characters of the secret: $secret1"
   displayName: 'Print first 3 characters of DefaultConnection'
 
 
